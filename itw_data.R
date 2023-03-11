@@ -107,6 +107,7 @@ scale_x_month <- function() {
 CPI_U <- read.csv("data/CPI_U.csv") %>%
   mutate(month = as.numeric(str_remove(Period, "M"))) %>%
   select(year = Year, month, CPI = Value)
+CPI_subtitle <- "INFLATION-ADJUSTED, JAN 2023 CPI-U=100"
 
 itw_data_raw <- read.delim("data/Into_the_Woods.txt", sep = "\t", check.names = FALSE) %>%
   rename("WeekEnding" = "Week Ending", "Capacity" = "% Capacity",
@@ -318,7 +319,6 @@ p_avg_gross <- itw_data %>%
 
 ## 5. Average Ticket Price ------------------
 
-CPI_subtitle <- "INFLATION-ADJUSTED, JAN 2023 CPI-U=100"
 p_price_adjusted <- itw_data %>%
   ggplot(aes(x = Week + 0.5, y = Production, fill = Avg_Price_Adjusted)) +
   geom_tile(color = "#e8ece5") +
@@ -422,4 +422,4 @@ g <- plot_grid(left_col, right_col, nrow = 1, rel_widths = c(5, 4)) %>%
   theme(plot.background = element_rect(color = NA, fill = "#e8ece5"),
         plot.margin = margin(r = 5, t = 5))
 
-ggsave("itw_data.png", g, width = 10, height = 7.5)
+ggsave("itw_data.png", g, width = 10, height = 7.5, dpi = 600)
