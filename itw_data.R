@@ -324,11 +324,12 @@ p_price_adjusted <- itw_data %>%
   geom_tile(color = "#e8ece5") +
   geom_vline(xintercept = 1, color = "#353525", linewidth = 0.4, linetype = "22")+
   geom_text(data = subset(itw_data, WeekEnding %in% as.Date(c("1988-06-05", "2002-06-02"))),
-            aes(x = Week + 1, label = "T"), color = "#353525", size = 2.5, family = "Dubai", fontface = 2) +
+            aes(x = Week + 1, label = "T"), color = "#353525", size = 2.5, 
+            family = "Franklin Gothic Medium Cond", fontface = 2) +
   geom_text(data = data.frame(x = 61, y = 1, label = "T: TONY AWARDS"), 
             aes(x = x, y = y, label = label),  hjust = 0,
             family = "Franklin Gothic Medium Cond", 
-            color = "#9b3950", size = 3, inherit.aes = FALSE) +
+            color = "#353525", size = 3, inherit.aes = FALSE) +
   scale_x_week() +
   scale_y_discrete(limits = rev, expand = c(0, 0)) +
   scale_fill_stepsn(colors = rev(brewer.pal(11, "Spectral")),
