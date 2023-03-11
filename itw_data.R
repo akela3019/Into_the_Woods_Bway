@@ -66,7 +66,7 @@ geom_production_label <- function() {
 geom_curve_arrow <- function() {
   x <- labor_day$Week[1] + 1.5
   y <- labor_day$Avg_Gross_Adjusted[1] - 2E3
-  xend <- 60 - 1; yend <- 5E4
+  xend <- 60; yend <- 5E4
   list(
     geom_curve(data = NULL, x = x, y = y, xend = xend, yend = yend, linetype = "11",
                color = "#9b3950", curvature = 0.15, linewidth = 0.4),
@@ -293,7 +293,7 @@ p_avg_gross <- itw_data %>%
   geom_line(linewidth = 0.5) +
   geom_point(size = 1.3) +
   geom_point(data = labor_day, shape = 1, size = 2.5, color = "#9b3950", stroke = 0.8)+
-  geom_text(data = data.frame(x = 60, y = 4.2E4, 
+  geom_text(data = data.frame(x = 61, y = 4.2E4, 
                               label = toupper("The Week After\nLabor Day Weekend")), 
             aes(x = x, y = y, label = label), color = "#9b3950", 
             family = "Franklin Gothic Medium Cond", size = 3,
@@ -323,6 +323,12 @@ p_price_adjusted <- itw_data %>%
   ggplot(aes(x = Week + 0.5, y = Production, fill = Avg_Price_Adjusted)) +
   geom_tile(color = "#e8ece5") +
   geom_vline(xintercept = 1, color = "#353525", linewidth = 0.4, linetype = "22")+
+  geom_text(data = subset(itw_data, WeekEnding %in% as.Date(c("1988-06-05", "2002-06-02"))),
+            aes(x = Week + 1, label = "T"), color = "#353525", size = 2.5, family = "Dubai", fontface = 2) +
+  geom_text(data = data.frame(x = 61, y = 1, label = "T: TONY AWARDS"), 
+            aes(x = x, y = y, label = label),  hjust = 0,
+            family = "Franklin Gothic Medium Cond", 
+            color = "#9b3950", size = 3, inherit.aes = FALSE) +
   scale_x_week() +
   scale_y_discrete(limits = rev, expand = c(0, 0)) +
   scale_fill_stepsn(colors = rev(brewer.pal(11, "Spectral")),
