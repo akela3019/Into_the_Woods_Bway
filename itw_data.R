@@ -396,7 +396,7 @@ left_col <- plot_grid(
   ncol = 1, align = "v", rel_heights = c(3.4, 3.1, 3.1))
 
 right_col_top <- plot_grid(
-  p_avg_gross, p_price_adjusted + theme(plot.margin = margin(15, 5, 20, 5)), 
+  p_avg_gross, p_price_adjusted + theme(plot.margin = margin(15, 5, 15, 5)), 
   ncol = 1, align = "v", rel_heights = c(2, 1.2))
 
 right_col_bottom <- plot_grid(
