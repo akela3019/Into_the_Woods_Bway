@@ -108,25 +108,29 @@ CPI_U <- read.csv("data/CPI_U.csv") %>%
   mutate(month = as.numeric(str_remove(Period, "M"))) %>%
   select(year = Year, month, CPI = Value)
 
-itw_data <- read.delim("data/Into_the_Woods.txt", sep = "\t", check.names = FALSE) %>%
+itw_data_raw <- read.delim("data/Into_the_Woods.txt", sep = "\t", check.names = FALSE) %>%
   rename("WeekEnding" = "Week Ending", "Capacity" = "% Capacity",
          "Previews" = "# Previews", "Perf" = "# Perf.") %>%
+  mutate(Gross = as.numeric(str_remove_all(Gross, "\\$|,"))) %>%
+  mutate(Attendance = as.numeric(str_remove_all(Attendance, ","))) %>%
+  mutate(Capacity = as.numeric(str_remove(Capacity, "%"))) %>%
   mutate(WeekEnding = as.Date(WeekEnding, format = "%b %d, %Y"))  %>%
   arrange(WeekEnding)%>%
   mutate(year = year(WeekEnding),
          month = month(WeekEnding)) %>%
-  mutate(Capacity = as.numeric(str_remove(Capacity, "%"))) %>%
+  mutate(Gross = ifelse(Perf == 16, Gross/2, Gross),
+         Attendance = ifelse(Perf == 16, Attendance/2, Attendance),
+         Perf = ifelse(Perf == 16, Perf/2, Perf)) %>%
   mutate(Production = case_when(
     WeekEnding < as.Date("2000-01-01") ~ "ITW '87",
     WeekEnding < as.Date("2020-01-01") ~ "ITW '02",
     TRUE ~ "ITW '22")) %>%
-  mutate(Production = factor(Production, paste0("ITW '", c("87", "02", "22")))) %>%
-  mutate(Gross = as.numeric(str_remove_all(Gross, "\\$|,"))) %>%
-  mutate(Attendance = as.numeric(str_remove_all(Attendance, ","))) %>%
+  mutate(Production = factor(Production, paste0("ITW '", c("87", "02", "22"))))
+
+write_tsv(itw_data_raw, file = "data/Into_the_Woods_cleaned.tsv")
+
+itw_data <- itw_data_raw %>%
   group_by(Production) %>%
-  mutate(Gross = ifelse(Perf == 16, Gross/2, Gross),
-         Attendance = ifelse(Perf == 16, Attendance/2, Attendance),
-         Perf = ifelse(Perf == 16, Perf/2, Perf)) %>%
   mutate(Week = row_number() - min(which(Perf > 0)) + 1) %>%
   mutate(Avg_Price = Gross/Attendance) %>%
   mutate(Gross_Diff = (Gross - lag(Gross))/lag(Gross) * 100) %>%
