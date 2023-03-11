@@ -195,7 +195,7 @@ p_gross_change <- itw_data %>%
   geom_production_label() +
   scale_y_continuous(breaks = seq(-50, 100, 50), expand = expansion(add = c(6, 0)),
                      labels = function(x) {paste0(x, "%")}) +
-  labs(x = NULL, y = NULL, title = "% GROSS CHANGE") +
+  labs(x = NULL, y = NULL, title = "% GROSS DIFF. FROM WEEK PRIOR") +
   theme_custom +
   theme(strip.text.x = element_blank(),
         legend.position = "none",
@@ -357,7 +357,7 @@ p_perf <- itw_data %>%
             fontface = "bold", position = position_stack(vjust = 0.5),
             family = "Dubai", hjust = 0.5, vjust = 0.4, size = 3) +
   facet_grid(~ toupper(type), scales = "free_x", space = "free_x") +
-  labs(x = NULL, y = NULL, title = "NO. OF PERFORMANCES") +
+  labs(x = NULL, y = NULL, title = "TOTAL NO. OF PERFORMANCES") +
   scale_x_continuous(expand = expansion(add = c(0, 0))) +
   scale_y_discrete(expand = expansion(add = c(0.3, 0.3)),
                    limits = rev) +
